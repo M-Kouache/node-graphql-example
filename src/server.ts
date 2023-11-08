@@ -1,10 +1,14 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
+import mongoose from "mongoose";
+import dotenv from "dotenv"
+
+dotenv.config()
+const { Schema } = mongoose
 
 
-const server = new ApolloServer({})
+mongoose.connect(process.env.DATABASE_URL);
+const MyModel = mongoose.model('Test', new Schema({ name: String }));
+const test = await MyModel.findOne();
+console.log(test)
 
-const { url } = await startStandaloneServer(server, { listen:{ port: 3000 } })
 
-console.log(`Server ready at: ${url}`)
 

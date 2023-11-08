@@ -14,7 +14,9 @@
   "dependencies": {
     "@apollo/server": "^4.9.5",
     "@types/node": "^20.8.10",
+    "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
+    "mongoose": "^8.0.0",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
