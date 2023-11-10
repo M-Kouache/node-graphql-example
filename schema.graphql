@@ -1,0 +1,56 @@
+type Query {
+    users: [User!]
+    user(id: ID!): User
+    blogs: [Blog!]
+    blog(id: ID!): Blog
+}
+
+type Mutation {
+    addUser(user: AddUserInput): User
+    addBlog(blog: AddBlogInput): Blog
+}
+
+input AddBlogInput {
+    title: String
+    slug: String
+    content: String
+    author: String
+}
+
+input AddUserInput {
+    first_name: String!
+    last_name: String!
+    email: String!
+    password: String!
+}
+
+type User {
+   id: ID!
+   first_name: String!
+   last_name: String!
+   email: String!
+   avatar: String
+   created_at: String
+   updated_at: String
+   blogs: [Blog!]
+}
+
+type Blog {
+    id: ID!
+    title: String!
+    content: String!
+    slug: String!
+    author: String
+    created_at: String
+    updated_at: String
+    comment: [Comment!]
+    user: User
+}
+
+type Comment {
+    id: ID!
+    user: User!
+    content: String!
+    likes: Int
+}
+
