@@ -13,15 +13,17 @@ auth.get('/login', (_req: Request, res: Response) => {
 
 auth.post('/signup', createUserValidator, async (req: Request, res: Response) => {
     try {
-        const { password } = req.body
-     
-        const hashedPassword = await passwordHash(password)
 
-        req.body.password = hashedPassword
-        
-        const createdUser = await UserModel.create(req.body)
+        const hashedPassword:string = await passwordHash(req.body.password)
 
-        res.status(httpStatusCodes.OK).send(createdUser)
+        const newUser = await UserModel.create({
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            email: req.body.email,
+            password: hashedPassword
+        })
+
+        res.status(httpStatusCodes.OK).send(newUser)
 
     } catch (e: any) {
         console.log(e)
