@@ -1,5 +1,11 @@
 import Joi, { Schema } from "joi";
 
+const emailJoiSchema = Joi.string().email({
+        minDomainSegments: 2,
+        tlds: { allow: ['com', 'net']}
+    }).required()
+
+
 
 export const createUserValidationSchema:Schema = Joi.object({
 
@@ -9,10 +15,13 @@ export const createUserValidationSchema:Schema = Joi.object({
 
     password: Joi.string().required(),
 
-    email: Joi.string().email({
-        minDomainSegments: 2,
-        tlds: { allow: ['com', 'net']}
-    }).required(),
+    email: emailJoiSchema,
 })
 
+export const logUserValidationSchema: Schema = Joi.object({
 
+    email: emailJoiSchema,
+
+    password: Joi.string().required(),
+
+})

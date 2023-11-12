@@ -7,9 +7,13 @@ import dotenv from "dotenv"
 import { readFileSync } from "fs";
 import { resolvers } from "./resolvers/resolvers.js" 
 import Auth from "./controllers/auth.js";
+import { GraphQLError } from "graphql";
+import UserModel from "./models/User.js";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 
 dotenv.config();
+import { Jwt } from "jsonwebtoken";
 mongoose.connect(process.env.DATABASE_URL);
 
 const app = express()
@@ -31,11 +35,25 @@ app.use(bodyParser.json())
 app.use('/auth', Auth)
 
 app.use('/graphql', expressMiddleware(server, {
-    context: async({req, res}) => {
-        const token = req.headers.authorization || '';
-        return {
-            token
+    context: async({req}) => {
+        const token = req.headers.authorization?.replace('Bearer', '');
+
+        if (!token) {
+            throw new GraphQLError('User is not authenticated', {
+                extensions: {
+                    code: 'UNAUTHENTICATED',
+                    http: { status: 401 },
+                },
+            });
         }
+
+        const tokenPayload = jwt.verify(token, process.env.JWT_SECRET_KEY)
+
+        return {
+            token: tokenPayload
+        } 
     },
 }))
+
 app.listen(3000, () => console.log('running on port 3000'))
+

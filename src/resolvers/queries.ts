@@ -1,5 +1,5 @@
 import { UserModel, BlogModel } from "../models/index.js"
-import { QueryResolvers, ResolversParentTypes } from "../types/resolvers-types.js"
+import { QueryResolvers, ResolversParentTypes, ResolversTypes } from "../types/resolvers-types.js"
 
 
 const queries:QueryResolvers = {
@@ -7,13 +7,13 @@ const queries:QueryResolvers = {
         users: () => {
             return UserModel.find({}).exec()
         },
-        user: (_, args) => {
+        user: (_:ResolversParentTypes, args: ResolversTypes) => {
             return UserModel.findById(args.id).exec()
         },
-        blogs: (_, args) => {
+        blogs: () => {
             return BlogModel.find({}).exec()
         },
-        blog: (_, args) => {
+        blog: (_:ResolversParentTypes, args: ResolversTypes) => {
             return BlogModel.findById(args.id).exec()
         }
     },
